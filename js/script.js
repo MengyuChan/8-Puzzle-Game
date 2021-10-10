@@ -1,7 +1,6 @@
 let moves = 0;
 let textMoves;
 
-
 // select the list items
 let ul = document.querySelectorAll('li');;
 const letters= ["A", "B", "C", "D", "E", "F", "G", "H", ""]
@@ -17,8 +16,8 @@ function setUp() {
     // set up the droppable and dragabble contents
     setDroppable(ul) ;
     setDraggable(ul);
-    console.log("The state dimension", state.dimension)
-    console.log("The state content", state.content)
+    // console.log("The state dimension", state.dimension)
+    // console.log("The state content", state.content)
     
     textMoves = document.getElementById('moves');
 
@@ -31,75 +30,9 @@ function setUp() {
     R7Insight.log("Log event");
 }
 
-
-
-const dragstart_handler = ev => {
-    console.log("dragstart")
-    ev.dataTransfer.setData("text/plain", ev.target.id)
-    ev.dataTransfer.dropEffect = "move";
-}
-
-const dragover_handler = ev => {
-    console.log("dragOver");
-    ev.preventDefault();
-}
-
-const drop_handler = ev => {
-    console.log("drag")
-    ev.preventDefault();
-    // Get the id of the target and add the moved element to the target's DOM
-    const data = ev.dataTransfer.getData("text/plain");
-    ev.target.innerText = document.getElementById(data).innerText;
-
-    // once dropped, unempty the cell :)
-    ev.target.classList.remove("empty")
-    ev.target.setAttribute("ondrop", "");
-    ev.target.setAttribute("ondragover", "");
-    document.getElementById(data).innerText = "";
-
-    // get new state after dropping
-    state.content = getState(ul);
-    // get new dimension from the state after dropping
-    console.log(state.dimension)
-
-    incrementMoves();
-}
-
-const removeDroppable = (items) => {
-    items.forEach((item) => {
-        item.setAttribute("ondrop", "");
-        item.setAttribute("ondragover", "");
-        item.setAttribute("draggable", "false");
-        item.setAttribute("ondragstart", "");
-        item.setAttribute("ondragend", "");
-    })
-
-}
-
-const dragend_handler = ev => {
-    console.log("dragEnd");
-    // Remove all of the drag data
-    ev.dataTransfer.clearData();
-    // remove all droppable attributes
-    removeDroppable(document.querySelectorAll('li'));
-
-    // set new droppable and draggable attributes
-    setDroppable(document.querySelectorAll('li'));
-    setDraggable(document.querySelectorAll('li'))
-
-    // if correct
-    if(isCorrect(letters, state.content)) {
-        console.log("Correct!");
-        alert("Congratulations! You solved the puzzle in " + moves + " moves.");
-        // startNewGame();
-
-    }
-
-}
-
-
 const state = {}
 state.content = letters;
+
 
 /**
  * Getters
@@ -158,6 +91,18 @@ const setDroppable = (items) => {
     console.log("The new state content",state.dimension)
 }
 
+const removeDroppable = (items) => {
+    items.forEach((item) => {
+        item.setAttribute("ondrop", "");
+        item.setAttribute("ondragover", "");
+        item.setAttribute("draggable", "false");
+        item.setAttribute("ondragstart", "");
+        item.setAttribute("ondragend", "");
+    })
+
+}
+
+
 const setDraggable = (items) => {
     const [row, col] = getEmptyCell();
 
@@ -193,23 +138,6 @@ const setId = (items) => {
     }
 }
 
-// shuffle the array
-const shuffle = (arr) => {
-    const copy = [...arr];
-    // console.log(copy);
-    // loop over the array
-    for(let i = 0; i < copy.length; i++) {
-        // for each index,i pick a random index j
-        let j = parseInt(Math.random()*copy.length);
-        // swap elements at i and j
-        let temp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = temp;
-    }
-    return copy;
-
-}
-
 
 const isSolvable = (arr) => {
     let number_of_inv = 0;
@@ -231,6 +159,7 @@ const isCorrect = (solution, content) => {
     return false;
 }
 
+
 // this function fill in each list item with an element from the letters array, accessing it with the index i
 const fillGrid = (items, letters) => {
     let shuffled = shuffle(letters);
@@ -240,15 +169,93 @@ const fillGrid = (items, letters) => {
         shuffled = shuffle(letters);
     }
 
-
     items.forEach((item, i) => {
         item.innerText = shuffled[i];
     })
 }
 
-fillGrid(ul, letters);
+// fillGrid(ul, letters);
+
+// shuffle the array
+const shuffle = (arr) => {
+    const copy = [...arr];
+    // console.log(copy);
+    // loop over the array
+    for(let i = 0; i < copy.length; i++) {
+        // for each index,i pick a random index j
+        let j = parseInt(Math.random()*copy.length);
+        // swap elements at i and j
+        let temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+    }
+    return copy;
+
+}
 
 
+/**
+ * Drag and drop handlers
+ */
+
+const dragstart_handler = ev => {
+    console.log("dragstart")
+    ev.dataTransfer.setData("text/plain", ev.target.id)
+    ev.dataTransfer.dropEffect = "move";
+}
+
+const dragover_handler = ev => {
+    console.log("dragOver");
+    ev.preventDefault();
+}
+
+const drop_handler = ev => {
+    console.log("drag")
+    ev.preventDefault();
+    // Get the id of the target and add the moved element to the target's DOM
+    const data = ev.dataTransfer.getData("text/plain");
+    ev.target.innerText = document.getElementById(data).innerText;
+
+    // once dropped, unempty the cell :)
+    ev.target.classList.remove("empty")
+    ev.target.setAttribute("ondrop", "");
+    ev.target.setAttribute("ondragover", "");
+    document.getElementById(data).innerText = "";
+
+    // get new state after dropping
+    state.content = getState(ul);
+    // get new dimension from the state after dropping
+    console.log(state.dimension)
+
+    incrementMoves();
+}
+
+
+
+const dragend_handler = ev => {
+    console.log("dragEnd");
+    // Remove all of the drag data
+    ev.dataTransfer.clearData();
+    // remove all droppable attributes
+    removeDroppable(document.querySelectorAll('li'));
+
+    // set new droppable and draggable attributes
+    setDroppable(document.querySelectorAll('li'));
+    setDraggable(document.querySelectorAll('li'))
+
+    // if correct
+    if(isCorrect(letters, state.content)) {
+        console.log("Correct!");
+        alert("Congratulations! You solved the puzzle in " + moves + " moves.");
+        // startNewGame();
+
+    }
+
+}
+
+/**
+ * The counts of movement
+ */
 //this function is to compute the count of move
 
 function incrementMoves(){
