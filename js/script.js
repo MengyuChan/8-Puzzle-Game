@@ -27,11 +27,13 @@ function setUp() {
 
     // initialize log entries
     R7Insight.init({
-        token: '8c524878-4ee8-43c5-91f5-ffa797c3726a',
-        region: 'us'
+        token: '8d25f106-1cd9-407d-a273-fb5c79178c4a',
+        region: 'us3'
     });
     R7Insight.log("Log event");
 }
+
+
 
 const state = {}
 state.content = letters;
@@ -88,11 +90,14 @@ const setDroppable = (items) => {
 
     // get new state after dropping
     state.content = getState(ul);
-    console.log("The new state dimension", state.content)
-
     // get new dimension from the state after dropping
     state.dimension = getDimension(state);
-    console.log("The new state content", state.dimension)
+
+    console.log("userId:" + window.localStorage.getItem("userId"),"The new state content:", JSON.stringify(state.content))
+    R7Insight.log("userId:" + window.localStorage.getItem("userId"),"The new state content:" + JSON.stringify(state.content));
+
+    console.log("userId:" + window.localStorage.getItem("userId"), "The new state dimension:", JSON.stringify(state.dimension))
+    R7Insight.log("userId:" + window.localStorage.getItem("userId"), "The new state dimension:" + JSON.stringify(state.dimension));
 }
 
 const removeDroppable = (items) => {
@@ -212,22 +217,22 @@ const shuffle = (arr) => {
  */
 
 const dragstart_handler = ev => {
-    console.log("dragstart")
+    // console.log("dragstart")
     ev.dataTransfer.setData("text/plain", ev.target.id)
     ev.dataTransfer.dropEffect = "move";
 }
 
 const dragover_handler = ev => {
-    console.log("dragOver");
+    // console.log("dragOver");
     ev.preventDefault();
 }
 
 const drop_handler = ev => {
-    console.log("drag")
+    // console.log("drag")
     ev.preventDefault();
     // Get the id of the target and add the moved element to the target's DOM
     const data = ev.dataTransfer.getData("text/plain");
-    console.log(document.getElementById(data).innerText)
+    // console.log(document.getElementById(data).innerText)
     const lastMove = {};
     lastMove['letter'] = document.getElementById(data).innerText;
     ev.target.innerText = document.getElementById(data).innerText;
@@ -245,9 +250,10 @@ const drop_handler = ev => {
 
     index = state.content.indexOf(lastMove['letter'])
     lastMove['to'] = [Math.floor(index / 3), index % 3]
-    console.log(lastMove)
+    console.log("userId:" + window.localStorage.getItem("userId"), JSON.stringify(lastMove))
+    R7Insight.log("userId:" + window.localStorage.getItem("userId"), JSON.stringify(lastMove));
     // get new dimension from the state after dropping
-    console.log(state.dimension)
+    // console.log(state.dimension)
 
     incrementMoves();
 }
@@ -255,7 +261,7 @@ const drop_handler = ev => {
 
 
 const dragend_handler = ev => {
-    console.log("dragEnd");
+    // console.log("dragEnd");
     // Remove all of the drag data
     ev.dataTransfer.clearData();
     // remove all droppable attributes
@@ -267,9 +273,11 @@ const dragend_handler = ev => {
 
     // if correct
     if (isCorrect(goal, state.content)) {
-        console.log("Correct!");
         alert("Congratulations! You solved the puzzle in " + moves + " moves. Please click OK to continue the study.");
+        console.log("userId:" + window.localStorage.getItem("userId"), "Completed in " + moves + " moves.")
+
         var w = window.open("postsurvey.html", "_self");
+        R7Insight.log("userId:" + window.localStorage.getItem("userId"), "correct!"); //"Moves:"+ moves
         // startNewGame();
 
     }
