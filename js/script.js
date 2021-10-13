@@ -3,8 +3,11 @@ let textMoves;
 
 // select the list items
 let ul = document.querySelectorAll('li');;
-const letters= ["A", "B", "C", "D", "E", "F", "G", "H", ""]
-// const letters= ["A", "E", " ", "F", "D", "C", "B", "H", "G"]
+// const letters = ["A", "B", "C", "D", "E", "F", "G", "H", ""]
+                 // 1,    2,   3,   4,   5,    6,   7 ,  8,
+const letters= ["B", "G", "H", "A", "F", "C", "D", "E", " "]
+const goal = ["A", "B", "C", "D", "E", "F", "G", "H", ""]
+
 
 function setUp() {
     fillGrid(ul, letters);
@@ -13,12 +16,12 @@ function setUp() {
     state.content = getState(ul);
     state.dimension = getDimension(state);
 
-    // set up the droppable and dragabble contents
-    setDroppable(ul) ;
+    // set up the droppable and draggable contents
+    setDroppable(ul);
     setDraggable(ul);
     // console.log("The state dimension", state.dimension)
     // console.log("The state content", state.content)
-    
+
     textMoves = document.getElementById('moves');
 
 
@@ -47,21 +50,21 @@ const getState = (items) => {
 
 // this function is to get the 2D positions of empty tile from the 1D index
 const getEmptyCell = () => {
-    const emptyCellNumber = state.emptyCellIndex+1;
-    const emptyCellRow = Math.ceil(emptyCellNumber/3);
+    const emptyCellNumber = state.emptyCellIndex + 1;
+    const emptyCellRow = Math.ceil(emptyCellNumber / 3);
     const emptyCellCol = 3 - (3 * emptyCellRow - emptyCellNumber);
     // emptyCellRow holds the actual row number the empty tile falls into in a 9-cell grid
     // the array index will be one less than its value. Same goes for emptyCellCol
-    return [emptyCellRow-1, emptyCellCol-1]
+    return [emptyCellRow - 1, emptyCellCol - 1]
 }
 
 const getDimension = (state) => {
     let j = 0;
     let arr = [];
-    const {content} = state;
-    for(let i = 0; i < 3; i++) {
-        arr.push(content.slice(j, j+3));
-        j+=3;
+    const { content } = state;
+    for (let i = 0; i < 3; i++) {
+        arr.push(content.slice(j, j + 3));
+        j += 3;
     }
 
     return arr;
@@ -73,7 +76,7 @@ const getDimension = (state) => {
  */
 const setDroppable = (items) => {
     items.forEach((item, i) => {
-        if(!item.innerText) {
+        if (!item.innerText) {
             // this line is to store the index of the empty tile
             state.emptyCellIndex = i;
             item.setAttribute("ondrop", "drop_handler(event);");
@@ -86,9 +89,10 @@ const setDroppable = (items) => {
     // get new state after dropping
     state.content = getState(ul);
     console.log("The new state dimension", state.content)
+
     // get new dimension from the state after dropping
     state.dimension = getDimension(state);
-    console.log("The new state content",state.dimension)
+    console.log("The new state content", state.dimension)
 }
 
 const removeDroppable = (items) => {
@@ -107,16 +111,16 @@ const setDraggable = (items) => {
     const [row, col] = getEmptyCell();
 
     let left, right, top, bottom = null;
-    if(state.dimension[row][col-1]) left = state.dimension[row][col-1];
-    if(state.dimension[row][col+1]) right = state.dimension[row][col+1];
+    if (state.dimension[row][col - 1]) left = state.dimension[row][col - 1];
+    if (state.dimension[row][col + 1]) right = state.dimension[row][col + 1];
 
-    if(state.dimension[row-1] != undefined) top = state.dimension[row-1][col];
-    if(state.dimension[row+1] != undefined) bottom = state.dimension[row+1][col];
+    if (state.dimension[row - 1] != undefined) top = state.dimension[row - 1][col];
+    if (state.dimension[row + 1] != undefined) bottom = state.dimension[row + 1][col];
 
 
     // make its right and left dragabble
     items.forEach(item => {
-        if(item.innerText == top ||
+        if (item.innerText == top ||
             item.innerText == bottom ||
             item.innerText == right ||
             item.innerText == left) {
@@ -133,7 +137,7 @@ const setDraggable = (items) => {
 
 // this function sets a unique id for each list item, in the form 'li0' to 'li8'
 const setId = (items) => {
-    for(let i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
         items[i].setAttribute("id", `li${i}`)
     }
 }
@@ -142,11 +146,11 @@ const setId = (items) => {
 const isSolvable = (arr) => {
     let number_of_inv = 0;
     // get the number of inversions
-    for(let i =0; i<arr.length; i++){
+    for (let i = 0; i < arr.length; i++) {
         // i picks the first element
-        for(let j = i+1; j < arr.length; j++) {
+        for (let j = i + 1; j < arr.length; j++) {
             // check that an element exist at index i and j, then check that element at i > at j
-            if((arr[i] && arr[j]) && arr[i] > arr[j]) number_of_inv++;
+            if ((arr[i] && arr[j]) && arr[i] > arr[j]) number_of_inv++;
         }
     }
     // if the number of inversions is even
@@ -154,23 +158,32 @@ const isSolvable = (arr) => {
     return (number_of_inv % 2 == 0);
 }
 
-const isCorrect = (solution, content) => {
-    if(JSON.stringify(solution) == JSON.stringify(content)) return true;
+const isCorrect = (solution, goal) => {
+    if (JSON.stringify(solution) == JSON.stringify(goal)) return true;
     return false;
 }
 
 
-// this function fill in each list item with an element from the letters array, accessing it with the index i
+// shuffled version - this function fill in each list item with an element from the letters array, accessing it with the index i
+// const fillGrid = (items, letters) => {
+//     let shuffled = shuffle(letters);
+//     // console.log(shuffled);
+//     // shuffle the letters array until there is a combination that is solvable
+//     while (!isSolvable(shuffled)) {
+//         shuffled = shuffle(letters);
+//     }
+//
+//     items.forEach((item, i) => {
+//         item.innerText = shuffled[i];
+//     })
+// }
+
+
+// without shuffling - this function fill in each list item with an element from the letters array, accessing it with the index i -- shuffled version
 const fillGrid = (items, letters) => {
-    let shuffled = shuffle(letters);
-    // console.log(shuffled);
-    // shuffle the letters array until there is a combination that is solvable
-    while(!isSolvable(shuffled)) {
-        shuffled = shuffle(letters);
-    }
 
     items.forEach((item, i) => {
-        item.innerText = shuffled[i];
+        item.innerText = letters[i];
     })
 }
 
@@ -181,9 +194,9 @@ const shuffle = (arr) => {
     const copy = [...arr];
     // console.log(copy);
     // loop over the array
-    for(let i = 0; i < copy.length; i++) {
+    for (let i = 0; i < copy.length; i++) {
         // for each index,i pick a random index j
-        let j = parseInt(Math.random()*copy.length);
+        let j = parseInt(Math.random() * copy.length);
         // swap elements at i and j
         let temp = copy[i];
         copy[i] = copy[j];
@@ -214,16 +227,25 @@ const drop_handler = ev => {
     ev.preventDefault();
     // Get the id of the target and add the moved element to the target's DOM
     const data = ev.dataTransfer.getData("text/plain");
+    console.log(document.getElementById(data).innerText)
+    const lastMove = {};
+    lastMove['letter'] = document.getElementById(data).innerText;
     ev.target.innerText = document.getElementById(data).innerText;
 
     // once dropped, unempty the cell :)
     ev.target.classList.remove("empty")
     ev.target.setAttribute("ondrop", "");
     ev.target.setAttribute("ondragover", "");
+  
     document.getElementById(data).innerText = "";
-
+    let index = state.content.indexOf(lastMove['letter'])
+    lastMove['from'] = [Math.floor(index / 3), index % 3]
     // get new state after dropping
     state.content = getState(ul);
+
+    index = state.content.indexOf(lastMove['letter'])
+    lastMove['to'] = [Math.floor(index / 3), index % 3]
+    console.log(lastMove)
     // get new dimension from the state after dropping
     console.log(state.dimension)
 
@@ -244,9 +266,10 @@ const dragend_handler = ev => {
     setDraggable(document.querySelectorAll('li'))
 
     // if correct
-    if(isCorrect(letters, state.content)) {
+    if (isCorrect(goal, state.content)) {
         console.log("Correct!");
-        alert("Congratulations! You solved the puzzle in " + moves + " moves.");
+        alert("Congratulations! You solved the puzzle in " + moves + " moves. Please click OK to continue the study.");
+        var w = window.open("postsurvey.html", "_self");
         // startNewGame();
 
     }
@@ -258,7 +281,7 @@ const dragend_handler = ev => {
  */
 //this function is to compute the count of move
 
-function incrementMoves(){
+function incrementMoves() {
     moves++;
     if (textMoves) {     // This is necessary.
         textMoves.innerHTML = moves;

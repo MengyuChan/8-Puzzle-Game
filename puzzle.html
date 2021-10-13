@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+
     <title>Puzzle Game</title>
 </head>
 <body onload="setUp()">
+<P>Thanks for participating in puzzle game! Your task is to slide tiles on the game board to rearrange them alphabetically. <br> Try to solve this puzzle with the fewest moves as you can. </P>
+<br>
 <h1>Sliding Tile Puzzle</h1>
 <div id="container">
     <ul>
@@ -37,11 +39,15 @@
 <br>
 <br>
 <div>
-    <input type="button" id="newGame" value="Start New Game" style="font-size:20px;height:50px;width:200px" onclick="location.reload()">
-    <script>console.log("Start New Game") </script>
-    <br>
-    <br>
     <label style= "font-size:20px;color:#E4FDE1">Number of Moves: <span id="moves">0</span></label>
+    <br>
+    <br>
+    <input type="button" id="newGame" value="Start New Game" class="button" onclick="location.reload()">
+    <script>console.log("Start New Game")</script>
+<!--    <br>-->
+<!--    <input type="checkbox" name="accept" id="acceptCheck">I win!-->
+<!--    <br>-->
+<!--    <input type="button" id="continueButton" value="Continue" style="font-size:20px;height:50px;width:200px">-->
 </div>
 
 
@@ -54,10 +60,17 @@
     // generate a unique user id
     var userId = Math.floor(Math.random() * 26) + Date.now();
     console.log('user id: ', userId);
-    // set local storage of user id and condition in browser
+    // set local storage of user id in browser
     window.localStorage.setItem("userId", userId);
     // window.localStorage.setItem("userId", window.localStorage.getItem("userId"));
     console.log('user id: ', window.localStorage.getItem("userId"));
+
+    //jump to postsurvey
+    // document.getElementById("continueButton").onclick = function () {
+    //     if (document.getElementById("acceptCheck").checked) {
+    //         var w = window.open("postsurvey.html", "_self");
+    //     } else alert("You must read and accept the consent form in order to participate in the user study.");
+    // };
 </script>
 
 </html>
