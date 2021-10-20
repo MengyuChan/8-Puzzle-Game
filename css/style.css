@@ -10,6 +10,18 @@ body {
     flex-direction: column;
     padding-top: 2%;
 }
+
+#instruction{
+    margin: auto;
+    border-radius: 25px;
+    border: 2px solid white;
+    padding: 20px;
+    /*width: 40%;*/
+    /*height: 40%;*/
+    text-align: center;
+    display: inline
+}
+
 #container {
     width: 500px;
     height: 500px;
