@@ -30,8 +30,8 @@ function setUp() {
 
     // initialize log entries
     R7Insight.init({
-        token: '8d25f106-1cd9-407d-a273-fb5c79178c4a',
-        region: 'us3'
+        token: '91b5608e-9dc5-4003-b1f7-a5cbab61a78a',
+        region: 'us2'
     });
     R7Insight.log("Log event");
 }
