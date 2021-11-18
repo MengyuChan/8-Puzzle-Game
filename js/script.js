@@ -282,16 +282,28 @@ const dragend_handler = ev => {
     // console.log("dragEnd " + "time" + dragEnd);
 
     // if correct
+
+    // new Promise(function (resolve, reject) {
+    //     resolve(alert('提交成功'))
+    // }).then(() => {
+    //     window.location.reload();
+    // })
+
     if (isCorrect(goal, state.content)) {
-        alert("Congratulations! You solved the puzzle in " + moves + " moves. Please click OK to continue the study.");
-        console.log("userId:" + window.localStorage.getItem("userId"), "Completed in " + moves + " moves.")
+
+        // console.log("userId:" + window.localStorage.getItem("userId"), "Completed in " + moves + " moves.")
         R7Insight.log("userId:" + window.localStorage.getItem("userId"), "Correct! Completed in " + moves + " moves."); //"Moves:"+ moves
+        alert("Congratulations! You solved the puzzle in " + moves + " moves. Please click OK to continue the study.");
+        
 
-        var w = window.open("postsurvey.html", "_self");
-
-        // startNewGame();
+        // var w = window.open("postsurvey.html", "_self");
+        setTimeout(() => { window.open("postsurvey.html", "_self"); }, 100);
 
     }
+
+        // location.href="postsurvey.html";
+
+
 
 }
 
