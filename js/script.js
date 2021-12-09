@@ -294,7 +294,7 @@ const dragend_handler = ev => {
         // console.log("userId:" + window.localStorage.getItem("userId"), "Completed in " + moves + " moves.")
         R7Insight.log("userId:" + window.localStorage.getItem("userId"), "Correct! Completed in " + moves + " moves."); //"Moves:"+ moves
         alert("Congratulations! You solved the puzzle in " + moves + " moves. Please click OK to continue the study.");
-        
+
 
         // var w = window.open("postsurvey.html", "_self");
         setTimeout(() => { window.open("postsurvey.html", "_self"); }, 100);
