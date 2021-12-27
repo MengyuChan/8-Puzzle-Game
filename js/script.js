@@ -35,6 +35,14 @@ function setUp() {
         region: 'us2'
     });
     R7Insight.log("Log event");
+
+    // generate a unique user id
+    var userId = Math.floor(Math.random() * 26) + Date.now();
+    console.log('user id: ', userId);
+// set local storage of user id in browser
+    window.localStorage.setItem("userId", userId);
+// window.localStorage.setItem("userId", window.localStorage.getItem("userId"));
+    console.log('user id: ', window.localStorage.getItem("userId"));
 }
 
 
