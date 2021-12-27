@@ -8,7 +8,8 @@ let timeStamp = 0;
 let ul = document.querySelectorAll('li');;
 // const letters = ["A", "B", "C", "D", "E", "F", "G", "H", ""]
                  // 1,    2,   3,   4,   5,    6,   7 ,  8,
-const letters= ["B", "G", "H", "A", "F", "C", "D", "E", " "]
+// const letters= ["B", "G", "H", "A", "F", "C", "D", "E", " "]
+const letters= ["B", "H", "C", "A", " ", "E", "D", "G", "F"]
 const goal = ["A", "B", "C", "D", "E", "F", "G", "H", ""]
 
 
@@ -34,6 +35,14 @@ function setUp() {
         region: 'us2'
     });
     R7Insight.log("Log event");
+
+    // generate a unique user id
+    var userId = Math.floor(Math.random() * 26) + Date.now();
+    console.log('user id: ', userId);
+// set local storage of user id in browser
+    window.localStorage.setItem("userId", userId);
+// window.localStorage.setItem("userId", window.localStorage.getItem("userId"));
+    console.log('user id: ', window.localStorage.getItem("userId"));
 }
 
 
