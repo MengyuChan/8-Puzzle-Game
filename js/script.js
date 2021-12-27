@@ -9,7 +9,7 @@ let ul = document.querySelectorAll('li');;
 // const letters = ["A", "B", "C", "D", "E", "F", "G", "H", ""]
                  // 1,    2,   3,   4,   5,    6,   7 ,  8,
 // const letters= ["B", "G", "H", "A", "F", "C", "D", "E", " "]
-const letters= ["B", "H", "C", "A", " ", "E", "D", "G", "F"]
+const letters= ["B", "H", "C", "A", " ", "E", "D", "G", "F"] // to test task difficulty
 const goal = ["A", "B", "C", "D", "E", "F", "G", "H", ""]
 
 
